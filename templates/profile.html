@@ -1,21 +1,15 @@
 {% extends "base.html" %}
 {% block title %}Profile - TASKSPHERE{% endblock %}
-{% block body %}
+{% block content %}
 <div class="dashboard-container">
-    <!-- Top Navbar -->
     <nav class="top-navbar">
-        <div class="navbar-left">
-            <h2>Profile</h2>
-        </div>
+        <div class="navbar-left"><h2>Student Profile</h2></div>
         <div class="navbar-right">
-            <span class="current-time">{{ current_time or '' }}</span>
-            <div class="user-profile">
-                <i class="fas fa-user-circle"></i>
-            </div>
+            <span class="current-time">{{ 'March 09, 2026' }}</span>
+            <div class="user-profile"><i class="fas fa-user-circle"></i></div>
         </div>
     </nav>
 
-    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <h1><i class="fas fa-tasks"></i> TASKSPHERE</h1>
@@ -36,15 +30,14 @@
         </nav>
     </aside>
 
-    <!-- Main Content -->
     <main class="main-content">
         <div class="profile-section">
-            <h2>Student Profile</h2>
+            <h2>Edit Profile</h2>
             
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
-                        <div class="alert alert-{{ 'success' if category == 'success' else 'warning' }}">
+                        <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}">
                             {{ message }}
                         </div>
                     {% endfor %}
@@ -52,53 +45,40 @@
             {% endwith %}
 
             <form method="POST" class="profile-form">
-                <!-- Basic Information -->
                 <div class="profile-card">
-                    <h3><i class="fas fa-user"></i> Basic Information</h3>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" value="{{ session.user_name }}" disabled>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" value="{{ session.user_email or '' }}" disabled>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Academic Information -->
-                <div class="profile-card">
-                    <h3><i class="fas fa-graduation-cap"></i> Academic Information</h3>
+                    <h3><i class="fas fa-user"></i> Contact Info</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Phone Number</label>
-                            <input type="tel" name="phone" value="{{ profile[1] if profile else '' }}">
+                            <input type="tel" name="phone" value="{{ profile[1] if profile else '' }}" placeholder="+91">
                         </div>
                         <div class="form-group">
-                            <label>Student ID / Register Number</label>
+                            <label>Student ID</label>
                             <input type="text" name="student_id" value="{{ profile[2] if profile else '' }}">
                         </div>
                     </div>
+                </div>
+
+                <div class="profile-card">
+                    <h3><i class="fas fa-graduation-cap"></i> Academic Info</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Department</label>
-                            <input type="text" name="department" value="{{ profile[3] if profile else '' }}" placeholder="e.g., Computer Science">
+                            <input type="text" name="department" value="{{ profile[3] if profile else '' }}" placeholder="Computer Science">
                         </div>
                         <div class="form-group">
-                            <label>Year of Study</label>
-                            <input type="text" name="year" value="{{ profile[4] if profile else '' }}" placeholder="e.g., 3rd Year">
+                            <label>Year</label>
+                            <input type="text" name="year" value="{{ profile[4] if profile else '' }}" placeholder="3rd Year">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>College Name</label>
-                        <input type="text" name="college" value="{{ profile[5] if profile else '' }}" placeholder="Your college name">
+                        <label>College</label>
+                        <input type="text" name="college" value="{{ profile[5] if profile else '' }}" placeholder="Your College">
                     </div>
                 </div>
 
-                <!-- Personal Information -->
                 <div class="profile-card">
-                    <h3><i class="fas fa-info-circle"></i> Personal Information</h3>
+                    <h3><i class="fas fa-info-circle"></i> Personal Info</h3>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Date of Birth</label>
@@ -108,33 +88,32 @@
                             <label>Gender</label>
                             <select name="gender">
                                 <option value="">Select Gender</option>
-                                <option value="Male" {% if profile and profile[7]=='Male' %}selected{% endif %}>Male</option>
-                                <option value="Female" {% if profile and profile[7]=='Female' %}selected{% endif %}>Female</option>
-                                <option value="Other" {% if profile and profile[7]=='Other' %}selected{% endif %}>Other</option>
+                                <option value="Male" {% if profile and profile[7] == 'Male' %}selected{% endif %}>Male</option>
+                                <option value="Female" {% if profile and profile[7] == 'Female' %}selected{% endif %}>Female</option>
+                                <option value="Other" {% if profile and profile[7] == 'Other' %}selected{% endif %}>Other</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>City</label>
-                        <input type="text" name="city" value="{{ profile[8] if profile else '' }}" placeholder="e.g., Chennai">
+                        <input type="text" name="city" value="{{ profile[8] if profile else '' }}" placeholder="Chennai">
                     </div>
                 </div>
 
-                <!-- Professional Details -->
                 <div class="profile-card">
-                    <h3><i class="fas fa-briefcase"></i> Professional Details</h3>
+                    <h3><i class="fas fa-briefcase"></i> Professional</h3>
                     <div class="form-group">
                         <label>Skills</label>
-                        <textarea name="skills" rows="3" placeholder="e.g., Python, Flask, JavaScript, SQL">{{ profile[9] if profile else '' }}</textarea>
+                        <textarea name="skills" rows="3" placeholder="Python, Flask, JavaScript, SQL">{{ profile[9] if profile else '' }}</textarea>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>LinkedIn Profile</label>
-                            <input type="url" name="linkedin" value="{{ profile[10] if profile else '' }}" placeholder="https://linkedin.com/in/yourprofile">
+                            <label>LinkedIn</label>
+                            <input type="url" name="linkedin" value="{{ profile[10] if profile else '' }}" placeholder="https://linkedin.com/in/">
                         </div>
                         <div class="form-group">
-                            <label>GitHub Profile</label>
-                            <input type="url" name="github" value="{{ profile[11] if profile else '' }}" placeholder="https://github.com/yourusername">
+                            <label>GitHub</label>
+                            <input type="url" name="github" value="{{ profile[11] if profile else '' }}" placeholder="https://github.com/">
                         </div>
                     </div>
                 </div>
